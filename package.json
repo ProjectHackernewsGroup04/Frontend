@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
-    "request": "^2.88.0"
+    "hbs": "^4.0.1",
+    "request": "^2.88.0",
+    "serve-favicon": "^2.5.0"
   }
 }
