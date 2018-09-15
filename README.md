@@ -47,3 +47,8 @@ _It goes through all the JSON objects in the content. `this` represent to the cu
 3. The new view will be rendered from `router.js`, make sure that it has a corresponding route/API. Render the page together with the JSON object/s by `res.render('test', {content: result});`
 
 4. Do your logics in the `controller.js`, make a request to the backend to get the data and all the transformations needed should be done only under this module. Feel free to make a helper or util, if necessary.
+
+5. Run the application with the command: `npm start` or `nodemon`(if you have it installed in your machine, it will automatically update the app everytime you save your changes)
+
+> _Locally: http://localhost:3000/_ <br>
+_Deployed version: http://188.166.124.246:3000/_
