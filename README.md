@@ -19,7 +19,7 @@
   </tr>
 {{/each}}
 ```
-_It goes through all the JSON objects in the content. `this` represent to the current element and `reply` is the property name._
+_It goes through all the JSON objects in the content. `this` represents the current element and `reply` is the property name._
 
 2. In `layout.hbs`, you'll find the headers which has the link for each page. Make sure that you will be using the same API pattern. See below.
 ```
