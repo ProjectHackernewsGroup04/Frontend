@@ -46,6 +46,9 @@ _It goes through all the JSON objects in the content. `this` represents the curr
 
 3. The new view will be rendered from `router.js`, make sure that it has a corresponding route/API. Render the page together with the JSON object/s by `res.render('test', {content: result});`
 
+REMEMBER: If the new route requires the user to be loggedin, include the authentication middleware like this:
+```router.get('/home', authenticationMiddleware(), function(req, res) {...```
+
 4. Do your logics in the `controller.js`, make a request to the backend to get the data and all the transformations needed should be done only under this module. Feel free to make a helper or util, if necessary.
 
 5. Run the application with the command: `npm start` or `nodemon`(if you have it installed in your machine, it will automatically update the app everytime you save your changes)
