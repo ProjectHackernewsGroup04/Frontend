@@ -1,0 +1,22 @@
+{
+  "by": "dhouston",
+  "descendants": 71,
+  "id": 8863,
+  "kids": [],
+  "score": 111,
+  "time": 1175714200,
+  "title": "My YC app: Dropbox - Throw away your USB drive",
+  "type": "story",
+  "url": "http://www.getdropbox.com/u/2/screencast.html"
+},
+{
+  "id": 1234,
+  "deleted": false,
+  "type": "story",
+  "by": "dhouston",
+  "time": 1175714200,
+  "text": "The comment, story or poll text. HTML.",
+  "dead": false,
+  "parent": "The comment's parent: either another comment or the relevant story.",
+  "poll": ""
+}
