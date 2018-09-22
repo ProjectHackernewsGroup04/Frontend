@@ -31,15 +31,16 @@ router.get('/login', function(req, res) {
 })
 
 router.post('/login', async function(req, res) {
-  var name = req.body.un
-  var password = req.body.pw
-  console.log(`Trying to login - ${name}:${password}`)
-  let result = await ctrl.logintest(name, password)
+  let user = {
+    'username': req.body.un,
+    'password': req.body.pw
+  }
+  let result = await ctrl.logintest(user) //NOTE:This should call the login() instead once connected to the backend
   console.log(`${JSON.stringify(result)}`);
   if (result.statusCode == 200) {
     req.login(result.user, function(err) {
-        res.redirect('/');
-      })
+      res.redirect('/');
+    })
   } else if (result.statusCode == 400) {
     res.render('login', {
       'message': result.errorMessage
@@ -64,10 +65,11 @@ router.get('/forgot', function(req, res) {
 })
 
 router.post('/register', async function(req, res) {
-  let name = req.body.un
-  let password = req.body.pw
-  console.log(`Creating account for ${name}:${password}`)
-  let result = await ctrl.registertest(name, password)
+  let user = {
+    'username': req.body.un,
+    'password': req.body.pw
+  }
+  let result = await ctrl.registertest(user) //NOTE:This should call the register() instead once connected to the backend
   if (result.statusCode == 200) {
     res.render('login', {
       'message': 'You have successfully registered. You can now login.'
@@ -83,6 +85,31 @@ router.post('/register', async function(req, res) {
   }
 })
 
+router.get('/submit', authenticationMiddleware(), async function(req, res) {
+  res.render('addstory')
+})
+
+router.post('/submit', authenticationMiddleware(), async function(req, res) {
+  let story = {
+    'title': req.body.title,
+    'url': req.body.url,
+    'text': req.body.text,
+    'by': req.session.passport.user.username
+  }
+  console.log(`${JSON.stringify(story, null, 2)}`)
+  let result = await ctrl.submittest(story) //NOTE:This should call the submit() instead once connected to the backend
+  if (result.statusCode == 200) {
+    res.redirect('/newest')
+  } else if (result.statusCode == 400) {
+    res.render('submit', {
+      'message': result.errorMessage
+    })
+  } else {
+    res.render('error', {
+      'message': result.errorMessage
+    })
+  }
+})
 
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
 
@@ -99,7 +126,9 @@ router.get('/dummy', function(req, res) {
 })
 
 router.get('/newest', function(req, res) {
-  res.send('This feature is not yet implemented..')
+  res.render('newest', {
+    'message': 'NOT YET IMPLEMENTED: This should display all the stories sorted by the date of creation.'
+  })
 })
 
 router.get('/newcomments', function(req, res) {

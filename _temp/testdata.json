@@ -20,3 +20,9 @@
   "parent": "The comment's parent: either another comment or the relevant story.",
   "poll": ""
 }
+,{
+  "title": "TEST",
+  "url": "www.facebook.com",
+  "text": "This is just a test if the story was added ;)",
+  "by": "test1"
+}
