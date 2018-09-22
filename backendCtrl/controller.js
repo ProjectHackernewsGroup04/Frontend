@@ -3,12 +3,9 @@ let _ = require('lodash')
 let backendUrl = 'http://0.0.0.0:5000/api/'
 let ctrl = {};
 
-ctrl.login = async function(un, pw) {
+ctrl.login = async function(user) {
   try {
-    let res = await axios.post(`${backendUrl}login`, {
-      'username': un,
-      'password': pw
-    })
+    let res = await axios.post(`${backendUrl}login`, user)
     for (var idx in res.data) {
       console.log(`The data is ${JSON.stringify(res.data[idx], null, 2)}`)
     }
@@ -18,12 +15,9 @@ ctrl.login = async function(un, pw) {
   }
 }
 
-ctrl.register = async function(un, pw) {
+ctrl.register = async function(user) {
   try {
-    let res = await axios.post(`${backendUrl}register`, {
-      'username': un,
-      'password': pw
-    })
+    let res = await axios.post(`${backendUrl}register`, user)
     for (var idx in res.data) {
       console.log(`The data is ${JSON.stringify(res.data[idx], null, 2)}`)
     }
@@ -33,7 +27,20 @@ ctrl.register = async function(un, pw) {
   }
 }
 
+ctrl.submit = async function(story) {
+  try {
+    let res = await axios.post(`${backendUrl}submit`, story)
+    for (var idx in res.data) {
+      console.log(`The data is ${JSON.stringify(res.data[idx], null, 2)}`)
+    }
+    return res.data
+  } catch (e) {
+    console.log(`submit ERROR: ${e}`)
+  }
+}
+
 //-----------------------------PLAYGROUND----------------------------------------------------
+let util = require('../_temp/util')
 
 ctrl.getHomeContent = async function() {
   try {
@@ -47,38 +54,44 @@ ctrl.getHomeContent = async function() {
   }
 }
 
-ctrl.logintest = async function(name, password) {
+ctrl.logintest = async function(user) {
   try {
       let users = require('../_temp/tempusers.json')
       let res = {}
-      var user = _.find(users, {
-        'username': name
+      var userDb = _.find(users, {
+        'username': user.username
       });
-      if (user != null) {
-        if (user.username === name && user.password === password) {
+      if (userDb != null) {
+        if (userDb.username === user.username && userDb.password === user.password) {
           res.statusCode = 200
-          res.user = user
+          res.user = userDb
         } else {
           res.statusCode = 400
-          res.errorMessage = 'Failed to Login'
+          res.errorMessage = 'Bad login.'
         }
       } else {
         res.statusCode = 400
         res.errorMessage = 'UNKNOWN USER'
       }
-      console.log('BEFORE');
-      console.log(`${JSON.stringify(res)}`)
       return res
   } catch (e) {
     console.log(`loginTest ERROR ${e.toString()}`)
   }
 }
 
-ctrl.registertest = async function(name, password){
+ctrl.registertest = async function(user){
   try{
-    let util = require('../_temp/util')
-    util.saveUser({'username':name, 'password': password})
-    return {'statusCode': 200, 'user':{'username':name, 'password': password}}
+    util.saveUser(user)
+    return {'statusCode': 200, 'user':user}
+  }catch(e){
+    console.log(`resgisterTest ERROR: ${e.toString()}`)
+  }
+}
+
+ctrl.submittest = async function(story){
+  try{
+    util.saveStory(story)
+    return {'statusCode': 200, 'story':story}
   }catch(e){
     console.log(`resgisterTest ERROR: ${e.toString()}`)
   }

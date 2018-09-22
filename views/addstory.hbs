@@ -1,0 +1,50 @@
+<center>
+  <tr>
+    <td bgcolor=#fafaf0><h3>{{message}}</h3></td>
+  </tr>
+  <tr>
+    <td bgcolor=#fafaf0>
+      <form method="post" action="/submit">
+        <table border="0">
+          <tr>
+            <td>title &nbsp; </td>
+            <td><input type="text" name="title" value="" size="50" oninput="tlen(this)" onfocus="tlen(this)"><span style="margin-left:10px"></span></td>
+          </tr>
+          <tr>
+            <td>url &nbsp; </td>
+            <td><input type="text" name="url" value="" size="50"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><b>or</b></td>
+          </tr>
+          <tr>
+            <td>text &nbsp; </td>
+            <td><textarea name="text" rows="4" cols="49"></textarea></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input type="submit" value="submit"></td>
+          </tr>
+          <tr style="height:20px"></tr>
+          <tr>
+            <td></td>
+            <td>Leave url blank to submit a question for discussion. If there is no url, the text (if any) will appear at the top of the thread.
+              <br><br> You can also submit via <u>bookmarklet</u>.</td>
+          </tr>
+        </table>
+      </form>
+    </td>
+  </tr>
+</center>
+
+<script type="text/javascript">
+  function tlen(el) {
+    var n = el.value.length - 80;
+    el.nextSibling.innerText = n > 0 ? n + ' too long' : '';
+  }
+</script>
