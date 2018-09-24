@@ -35,10 +35,10 @@ router.post('/login', async function(req, res) {
     'username': req.body.un,
     'password': req.body.pw
   }
-  let result = await ctrl.logintest(user) //NOTE:This should call the login() instead once connected to the backend
+  let result = await ctrl.login(user)
   console.log(`${JSON.stringify(result)}`);
   if (result.statusCode == 200) {
-    req.login(result.user, function(err) {
+    req.login(user, function(err) {
       res.redirect('/');
     })
   } else if (result.statusCode == 400) {
