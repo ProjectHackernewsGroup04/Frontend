@@ -35,7 +35,7 @@ router.post('/login', async function(req, res) {
     'username': req.body.un,
     'password': req.body.pw
   }
-  let result = await ctrl.logintest(user) //NOTE:This should call the login() instead once connected to the backend
+  let result = await ctrl.login(user) //NOTE:This should call the login() instead once connected to the backend
   console.log(`${JSON.stringify(result)}`);
   if (result.statusCode == 200) {
     req.login(result.user, function(err) {
