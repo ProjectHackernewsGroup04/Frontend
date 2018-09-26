@@ -1,6 +1,6 @@
 let axios = require('axios');
 let _ = require('lodash')
-let backendUrl = 'http://0.0.0.0:5000/api/'
+let backendUrl = 'http://backend-app:5000/api/'
 let ctrl = {};
 
 ctrl.login = async function(user) {
@@ -36,6 +36,18 @@ ctrl.submit = async function(story) {
     return res.data
   } catch (e) {
     console.log(`submit ERROR: ${e}`)
+  }
+}
+ctrl.getStories = async function(){
+  try {
+    let res = await axios.get(`${backendUrl}item/all`)
+    for (var idx in res.data){
+      console.log(`this data is ${JSON.stringify(res.data[idx], null, 2)} `)
+    }
+    return res.data
+    
+  } catch (e) {
+    console.log(`getStories ERROR: ${e}`)
   }
 }
 
@@ -96,5 +108,9 @@ ctrl.submittest = async function(story){
     console.log(`resgisterTest ERROR: ${e.toString()}`)
   }
 }
+
+
+
+
 
 module.exports = ctrl;

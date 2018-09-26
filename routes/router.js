@@ -125,10 +125,9 @@ router.get('/dummy', function(req, res) {
   res.render('dummy')
 })
 
-router.get('/newest', function(req, res) {
-  res.render('newest', {
-    'message': 'NOT YET IMPLEMENTED: This should display all the stories sorted by the date of creation.'
-  })
+
+router.get('/newest', async function(req, res) {
+  res.render('newest', { "stories": await ctrl.getStories() })
 })
 
 router.get('/newcomments', function(req, res) {
@@ -150,5 +149,19 @@ router.get('/jobs', function(req, res) {
 router.get('/submit', authenticationMiddleware(), function(req, res) {
   res.send('This feature is not yet implemented..')
 })
+router.get('/', function(req, res, next) {
+  // res.render('layout', { title: 'Movieseat' });
+
+  connection.connect();
+
+    connection.query('SELECT * FROM `users` WHERE `first_name` = "Kees"', function (error, results, fields) {
+      // error will be an Error if one occurred during the query
+      // results will contain the results of the query
+      // fields will contain information about the returned results fields (if any)
+      console.log(results);
+    });
+
+  connection.end();
+});
 
 module.exports = router
