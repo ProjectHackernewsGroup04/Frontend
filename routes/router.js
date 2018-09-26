@@ -69,7 +69,7 @@ router.post('/register', async function(req, res) {
     'username': req.body.un,
     'password': req.body.pw
   }
-  let result = await ctrl.registertest(user) //NOTE:This should call the register() instead once connected to the backend
+  let result = await ctrl.register(user) //NOTE:This should call the register() instead once connected to the backend
   if (result.statusCode == 200) {
     res.render('login', {
       'message': 'You have successfully registered. You can now login.'
