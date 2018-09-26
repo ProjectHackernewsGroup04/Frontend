@@ -1,6 +1,6 @@
 let axios = require('axios');
 let _ = require('lodash')
-let backendUrl = 'http://0.0.0.0:5000/api/'
+let backendUrl = 'http://backend-app:5000/api/'
 let ctrl = {};
 
 ctrl.login = async function(user) {
