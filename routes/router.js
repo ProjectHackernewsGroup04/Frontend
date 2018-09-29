@@ -111,6 +111,16 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
   }
 })
 
+router.get('/delete/:id', function(req, res) {
+  //finditembyid
+  res.render('delconfirm')
+})
+
+router.post('/delete/:id'), function(req,res) {
+  //deleted-true
+  res.redirect('/')
+}
+
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
 
 router.get('/test', async function(req, res) {

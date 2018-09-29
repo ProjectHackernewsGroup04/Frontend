@@ -11,7 +11,8 @@ ctrl.login = async function(user) {
     }
     return res.data
   } catch (e) {
-    console.log(`login ERROR: ${e}`)
+    console.log(`login() ERROR: ${e.toString()}`)
+    return {'statusCode': 500, 'errorMessage': e.toString()}
   }
 }
 
@@ -23,7 +24,8 @@ ctrl.register = async function(user) {
     }
     return res.data
   } catch (e) {
-    console.log(`register ERROR: ${e}`)
+    console.log(`register() ERROR: ${e.toString()}`)
+    return {'statusCode': 500, 'errorMessage': e.toString()}
   }
 }
 
@@ -35,7 +37,8 @@ ctrl.submit = async function(story) {
     }
     return res.data
   } catch (e) {
-    console.log(`submit ERROR: ${e}`)
+    console.log(`submit() ERROR: ${e.toString()}`)
+    return {'statusCode': 500, 'errorMessage': e.toString()}
   }
 }
 
@@ -51,6 +54,7 @@ ctrl.getHomeContent = async function() {
     return res.data
   } catch (e) {
     console.log(`getHomeContent ERROR: ${e.toString()}`)
+    return {'statusCode': 500, 'errorMessage': e.toString()}
   }
 }
 
@@ -76,6 +80,7 @@ ctrl.logintest = async function(user) {
       return res
   } catch (e) {
     console.log(`loginTest ERROR ${e.toString()}`)
+    return {'statusCode': 500, 'errorMessage': e.toString()}
   }
 }
 
@@ -85,6 +90,7 @@ ctrl.registertest = async function(user){
     return {'statusCode': 200, 'user':user}
   }catch(e){
     console.log(`resgisterTest ERROR: ${e.toString()}`)
+    return {'statusCode': 500, 'errorMessage': e.toString()}
   }
 }
 
@@ -94,6 +100,7 @@ ctrl.submittest = async function(story){
     return {'statusCode': 200, 'story':story}
   }catch(e){
     console.log(`resgisterTest ERROR: ${e.toString()}`)
+    return {'statusCode': 500, 'errorMessage': e.toString()}
   }
 }
 
