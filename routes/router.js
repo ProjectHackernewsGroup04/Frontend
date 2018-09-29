@@ -35,7 +35,7 @@ router.post('/login', async function(req, res) {
     'username': req.body.un,
     'password': req.body.pw
   }
-  let result = await ctrl.login(user) //NOTE:This should call the login() instead once connected to the backend
+  let result = await ctrl.login(user)
   console.log(`${JSON.stringify(result)}`);
   if (result.statusCode == 200) {
     req.login(user, function(err) {
@@ -69,7 +69,7 @@ router.post('/register', async function(req, res) {
     'username': req.body.un,
     'password': req.body.pw
   }
-  let result = await ctrl.register(user) //NOTE:This should call the register() instead once connected to the backend
+  let result = await ctrl.register(user)
   if (result.statusCode == 200) {
     res.render('login', {
       'message': 'You have successfully registered. You can now login.'
@@ -111,9 +111,16 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
   }
 })
 
-router.get('/delete/:id', function(req, res) {
+router.get('/delete/:id', async function(req, res) {
   //finditembyid
-  res.render('delconfirm')
+  let id = req.params.id
+  console.log('The id :' + id);
+  let result = await ctrl.findItemById(id)
+  if(result.statusCode == 200){
+      res.render('delconfirm', {'story':result.item, 'id':id})
+  }else{
+    res.render('error', {'message': result.errorMessage})
+  }
 })
 
 router.post('/delete/:id'), function(req,res) {

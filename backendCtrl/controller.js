@@ -42,6 +42,19 @@ ctrl.submit = async function(story) {
   }
 }
 
+ctrl.findItemById = async function(id){
+  try{
+    let res = await axios.get(`${backendUrl}item/${id}`)
+    // for (var idx in res.data) {
+      console.log(`The data is ${JSON.stringify(res.data, null, 2)}`)
+    // }
+    return res.data
+  }catch(e){
+    console.log(`findItemById() ERROR: ${e.toString()}`)
+    return {'statusCode': 500, 'errorMessage': e.toString()}
+  }
+}
+
 //-----------------------------PLAYGROUND----------------------------------------------------
 let util = require('../_temp/util')
 

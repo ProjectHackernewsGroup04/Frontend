@@ -1,28 +1,28 @@
 <tr>
   <td style="line-height:12pt; height:10px;background-color:#fafaf0;">
-    <b>Confirm</b>
+    <b>Confirm</b> {{id}}
   </td>
 </tr>
 <tr>
   <td style="background-color:#fafaf0;" valign="top">
-    <a href="item/{{id}}"><h3>Title{{title}}</h3></a>
+    <a href="item/{{id}}"><h3>{{story.title}}</h3></a>
   </td>
 </tr>
 <tr>
   <td style="background-color:#fafaf0;" class="subtext">
-    <span>0{{karma}} point</span> by <a href="user/{{by}}">{{by}}Author</a>
+    <span>{{story.score}} point</span> by <a href="user/{{story.by}}">{{story.by}}</a>
     <span class="age">
-      <a href="item/{{id}}">{{time}}0 minutes ago</a>
+      <a href="item/{{id}}">{{story.time}}0 minutes ago</a>
     </span>
     <span></span> |
     <a href="edit/{{id}}">edit</a> |
-    <a href="delete-confirm/{{_id}}">delete</a>
+    <a href="delete-confirm/{{id}}">delete</a>
   </td>
 </tr>
 <tr>
   <td style="background-color:#fafaf0;">
     <br><br>
-    <form method="post" action="/delete/{{_id}}">
+    <form method="post" action="/delete/{{id}}">
       Do you want this to be deleted?
       <br><br>
       <input type="submit" name="btn" value="Yes">&nbsp;
