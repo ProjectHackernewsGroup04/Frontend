@@ -111,7 +111,7 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
   }
 })
 
-router.get('/delete/:id', async function(req, res) {
+router.get('/deleteconfirm/:id', async function(req, res) {
   //finditembyid
   let id = req.params.id
   console.log('The id :' + id);
@@ -123,9 +123,15 @@ router.get('/delete/:id', async function(req, res) {
   }
 })
 
-router.post('/delete/:id'), function(req,res) {
+router.get('/delete/:id'), async function(req,res) {
   //deleted-true
-  res.redirect('/')
+  let id = req.params.id
+  let result = await ctrl.delete(id)
+  if(result.statusCode == 200){
+    res.redirect('/')
+  }else{
+      res.render('error', {'message': ressult.errorMessage})
+  }
 }
 
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
