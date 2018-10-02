@@ -111,7 +111,7 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
   }
 })
 
-router.get('/deleteconfirm/:id', async function(req, res) {
+router.get('/delete-confirm/:id', async function(req, res) {
   //finditembyid
   let id = req.params.id
   console.log('The id :' + id);
@@ -123,7 +123,7 @@ router.get('/deleteconfirm/:id', async function(req, res) {
   }
 })
 
-router.get('/delete/:id'), async function(req,res) {
+router.post('/delete/:id'), async function(req,res) {
   //deleted-true
   let id = req.params.id
   let result = await ctrl.delete(id)
