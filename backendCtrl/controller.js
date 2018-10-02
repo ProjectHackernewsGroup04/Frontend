@@ -67,7 +67,7 @@ ctrl.findItemById = async function(id) {
 
 ctrl.delete = async function(id) {
   try {
-    let res = axios.delete(`${backendUrl}item/${id}`)
+    let res = await axios.delete(`${backendUrl}item/${id}`)
     console.log(`The data is ${JSON.stringify(res.data, null, 2)}`);
     return res.data
   } catch (e) {

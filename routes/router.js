@@ -114,25 +114,38 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
 router.get('/delete-confirm/:id', async function(req, res) {
   //finditembyid
   let id = req.params.id
-  console.log('The id :' + id);
   let result = await ctrl.findItemById(id)
-  if(result.statusCode == 200){
-      res.render('delconfirm', {'story':result.item, 'id':id})
-  }else{
-    res.render('error', {'message': result.errorMessage})
+  if (result.statusCode == 200) {
+    res.render('delconfirm', {
+      'story': result.item,
+      'id': id
+    })
+  } else {
+    res.render('error', {
+      'message': result.errorMessage
+    })
   }
 })
 
-router.post('/delete/:id'), async function(req,res) {
-  //deleted-true
+router.post('/delete/:id', async function(req, res) {
   let id = req.params.id
-  let result = await ctrl.delete(id)
-  if(result.statusCode == 200){
-    res.redirect('/')
-  }else{
-      res.render('error', {'message': ressult.errorMessage})
+  let btnclicked = req.body.btn
+  console.log(id + '----' + btnclicked)
+  console.log('THE BODY --->' + JSON.stringify(req.body, null, 2));
+  if (btnclicked == 'Yes') {
+    //deleted-true
+    let result = await ctrl.delete(id)
+    if (result.statusCode == 200) {
+      res.redirect('/')
+    } else {
+      res.render('error', {
+        'message': ressult.errorMessage
+      })
+    }
+  } else if (btnclicked == 'No') {
+    res.redirect('/') // THIS IS SUPPOSED TO REDIRECT IN THE STORY OVERVIEW, NOT YET IMPLEMENTED
   }
-}
+})
 
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
 
