@@ -11,7 +11,11 @@ ctrl.login = async function(user) {
     }
     return res.data
   } catch (e) {
-    console.log(`login ERROR: ${e}`)
+    console.log(`login() ERROR: ${e.toString()}`)
+    return {
+      'statusCode': 500,
+      'errorMessage': e.toString()
+    }
   }
 }
 
@@ -23,7 +27,11 @@ ctrl.register = async function(user) {
     }
     return res.data
   } catch (e) {
-    console.log(`register ERROR: ${e}`)
+    console.log(`register() ERROR: ${e.toString()}`)
+    return {
+      'statusCode': 500,
+      'errorMessage': e.toString()
+    }
   }
 }
 
@@ -35,7 +43,39 @@ ctrl.submit = async function(story) {
     }
     return res.data
   } catch (e) {
-    console.log(`submit ERROR: ${e}`)
+    console.log(`submit() ERROR: ${e.toString()}`)
+    return {
+      'statusCode': 500,
+      'errorMessage': e.toString()
+    }
+  }
+}
+
+ctrl.findItemById = async function(id) {
+  try {
+    let res = await axios.get(`${backendUrl}item/${id}`)
+    console.log(`The data is ${JSON.stringify(res.data, null, 2)}`)
+    return res.data
+  } catch (e) {
+    console.log(`findItemById() ERROR: ${e.toString()}`)
+    return {
+      'statusCode': 500,
+      'errorMessage': e.toString()
+    }
+  }
+}
+
+ctrl.delete = async function(id) {
+  try {
+    let res = await axios.delete(`${backendUrl}item/${id}`)
+    console.log(`The data is ${JSON.stringify(res.data, null, 2)}`);
+    return res.data
+  } catch (e) {
+    console.log(`delete() ERROR: ${e.toString()}`);
+    return {
+      'statusCode': 500,
+      'errorMessage': e.toString()
+    }
   }
 }
 
@@ -51,49 +91,71 @@ ctrl.getHomeContent = async function() {
     return res.data
   } catch (e) {
     console.log(`getHomeContent ERROR: ${e.toString()}`)
+    return {
+      'statusCode': 500,
+      'errorMessage': e.toString()
+    }
   }
 }
 
 ctrl.logintest = async function(user) {
   try {
-      let users = require('../_temp/tempusers.json')
-      let res = {}
-      var userDb = _.find(users, {
-        'username': user.username
-      });
-      if (userDb != null) {
-        if (userDb.username === user.username && userDb.password === user.password) {
-          res.statusCode = 200
-          res.user = userDb
-        } else {
-          res.statusCode = 400
-          res.errorMessage = 'Bad login.'
-        }
+    let users = require('../_temp/tempusers.json')
+    let res = {}
+    var userDb = _.find(users, {
+      'username': user.username
+    });
+    if (userDb != null) {
+      if (userDb.username === user.username && userDb.password === user.password) {
+        res.statusCode = 200
+        res.user = userDb
       } else {
         res.statusCode = 400
-        res.errorMessage = 'UNKNOWN USER'
+        res.errorMessage = 'Bad login.'
       }
-      return res
+    } else {
+      res.statusCode = 400
+      res.errorMessage = 'UNKNOWN USER'
+    }
+    return res
   } catch (e) {
     console.log(`loginTest ERROR ${e.toString()}`)
+    return {
+      'statusCode': 500,
+      'errorMessage': e.toString()
+    }
   }
 }
 
-ctrl.registertest = async function(user){
-  try{
+ctrl.registertest = async function(user) {
+  try {
     util.saveUser(user)
-    return {'statusCode': 200, 'user':user}
-  }catch(e){
+    return {
+      'statusCode': 200,
+      'user': user
+    }
+  } catch (e) {
     console.log(`resgisterTest ERROR: ${e.toString()}`)
+    return {
+      'statusCode': 500,
+      'errorMessage': e.toString()
+    }
   }
 }
 
-ctrl.submittest = async function(story){
-  try{
+ctrl.submittest = async function(story) {
+  try {
     util.saveStory(story)
-    return {'statusCode': 200, 'story':story}
-  }catch(e){
+    return {
+      'statusCode': 200,
+      'story': story
+    }
+  } catch (e) {
     console.log(`resgisterTest ERROR: ${e.toString()}`)
+    return {
+      'statusCode': 500,
+      'errorMessage': e.toString()
+    }
   }
 }
 
