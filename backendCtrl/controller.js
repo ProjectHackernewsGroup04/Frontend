@@ -7,7 +7,7 @@ ctrl.login = async function(user) {
   try {
     let res = await axios.post(`${backendUrl}login`, user)
     for (var idx in res.data) {
-      console.log(`The data is ${JSON.stringify(res.data[idx], null, 2)}`)
+      console.log(`The response is ${JSON.stringify(res.data[idx], null, 2)}`)
     }
     return res.data
   } catch (e) {
@@ -23,7 +23,7 @@ ctrl.register = async function(user) {
   try {
     let res = await axios.post(`${backendUrl}register`, user)
     for (var idx in res.data) {
-      console.log(`The data is ${JSON.stringify(res.data[idx], null, 2)}`)
+      console.log(`The response is ${JSON.stringify(res.data[idx], null, 2)}`)
     }
     return res.data
   } catch (e) {
@@ -38,9 +38,7 @@ ctrl.register = async function(user) {
 ctrl.submit = async function(story) {
   try {
     let res = await axios.post(`${backendUrl}submit`, story)
-    for (var idx in res.data) {
-      console.log(`The data is ${JSON.stringify(res.data[idx], null, 2)}`)
-    }
+    console.log(`The response is ${JSON.stringify(res.data, null, 2)}`)
     return res.data
   } catch (e) {
     console.log(`submit() ERROR: ${e.toString()}`)
@@ -68,7 +66,7 @@ ctrl.findItemById = async function(id) {
 ctrl.delete = async function(id) {
   try {
     let res = await axios.delete(`${backendUrl}item/${id}`)
-    console.log(`The data is ${JSON.stringify(res.data, null, 2)}`);
+    console.log(`The response is ${JSON.stringify(res.data, null, 2)}`);
     return res.data
   } catch (e) {
     console.log(`delete() ERROR: ${e.toString()}`);

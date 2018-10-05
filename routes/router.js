@@ -97,7 +97,7 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
     'by': req.session.passport.user.username
   }
   console.log(`${JSON.stringify(story, null, 2)}`)
-  let result = await ctrl.submittest(story) //NOTE:This should call the submit() instead once connected to the backend
+  let result = await ctrl.submit(story)
   if (result.statusCode == 200) {
     res.redirect('/newest')
   } else if (result.statusCode == 400) {
