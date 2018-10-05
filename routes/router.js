@@ -147,6 +147,21 @@ router.post('/delete/:id', async function(req, res) {
   }
 })
 
+router.get('/newest', async function(req, res) {
+  let result = await ctrl.getStories()
+  if (result.statusCode == 200) {
+    res.redirect('/newest')
+  } else if (result.statusCode == 400) {
+    res.render('error', {
+      'message': result.errorMessage
+    })
+  } else {
+    res.render('error', {
+      'message': result.errorMessage
+    })
+  }
+})
+
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
 
 router.get('/test', async function(req, res) {
@@ -159,25 +174,6 @@ router.get('/test', async function(req, res) {
 
 router.get('/dummy', function(req, res) {
   res.render('dummy')
-})
-
-
-router.get('/newest', async function(req, res) {
-  res.render('newest', { "stories": await ctrl.getStories() })
-
-  let result = await ctrl.getStories() //NOTE:This should call the submit() instead once connected to the backend
-  if (result.statusCode == 200) {
-    res.redirect('/newest')
-  } else if (result.statusCode == 400) {
-    res.render('error', {
-      'message': result.errorMessage
-    
-    })
-  } else {
-    res.render('error', {
-      'message': result.errorMessage
-    })
-  }
 })
 
 
