@@ -161,11 +161,25 @@ router.get('/dummy', function(req, res) {
   res.render('dummy')
 })
 
-router.get('/newest', function(req, res) {
-  res.render('newest', {
-    'message': 'NOT YET IMPLEMENTED: This should display all the stories sorted by the date of creation.'
-  })
+
+router.get('/newest', async function(req, res) {
+  res.render('newest', { "stories": await ctrl.getStories() })
+
+  let result = await ctrl.getStories() //NOTE:This should call the submit() instead once connected to the backend
+  if (result.statusCode == 200) {
+    res.redirect('/newest')
+  } else if (result.statusCode == 400) {
+    res.render('error', {
+      'message': result.errorMessage
+    
+    })
+  } else {
+    res.render('error', {
+      'message': result.errorMessage
+    })
+  }
 })
+
 
 router.get('/newcomments', function(req, res) {
   res.send('This feature is not yet implemented..')
