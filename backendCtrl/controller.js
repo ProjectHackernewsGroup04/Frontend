@@ -80,11 +80,11 @@ ctrl.delete = async function(id) {
 ctrl.getStories = async function(){
   try {
     let res = await axios.get(`${backendUrl}item/all`)
-    for (var idx in res.data){
-      console.log(`this data is ${JSON.stringify(res.data[idx], null, 2)} `)
-    }
+    // for (var idx in res.data.items){
+    //   console.log(`this data is ${JSON.stringify(res.data.items[idx], null, 2)} `)
+    // }
     return res.data
-    
+
   } catch (e) {
     console.log(`getStories ERROR: ${e}`)
   }

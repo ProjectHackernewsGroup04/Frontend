@@ -8,6 +8,7 @@ let path = require('path')
 let passport = require('passport')
 let http = require('http')
 
+let hbshelper = require('./views/hbs_helper');
 let frontendRouter = require('./routes/router')
 let portNumber = 3000;
 

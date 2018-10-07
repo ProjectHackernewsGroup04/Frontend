@@ -150,7 +150,7 @@ router.post('/delete/:id', async function(req, res) {
 router.get('/newest', async function(req, res) {
   let result = await ctrl.getStories()
   if (result.statusCode == 200) {
-    res.redirect('/newest')
+    res.render('newest', {'stories': result.items})
   } else if (result.statusCode == 400) {
     res.render('error', {
       'message': result.errorMessage
@@ -163,19 +163,6 @@ router.get('/newest', async function(req, res) {
 })
 
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
-
-router.get('/test', async function(req, res) {
-  let result = await ctrl.getHomeContent();
-  console.log(`I am back ${result.length}`);
-  res.render('test', {
-    content: result
-  })
-})
-
-router.get('/dummy', function(req, res) {
-  res.render('dummy')
-})
-
 
 router.get('/newcomments', function(req, res) {
   res.send('This feature is not yet implemented..')
@@ -190,10 +177,6 @@ router.get('/ask', function(req, res) {
 })
 
 router.get('/jobs', function(req, res) {
-  res.send('This feature is not yet implemented..')
-})
-
-router.get('/submit', authenticationMiddleware(), function(req, res) {
   res.send('This feature is not yet implemented..')
 })
 
