@@ -1,60 +1,112 @@
-
-
-<head>
-<style>
-div.a {
-    font-size: 15px;
-}
-
-div.b {
-    font-size: large;
-}
-
-div.c {
-    font-size: 150%;
-}
-</style>
-</head>
-
-<div>
-
-{{#each stories as |arry index |}}
-<script>var Handlebars = require('handlebars');
-
-Handlebars.registerHelper("inc", function(value, options)
-{
-  value = 0;
-    return parseInt(value) + 1;
-});</script>
-
+{{#each stories}}
+  <tr>
+    <td bgcolor=#fafaf0 valign="top">
+      <span>{{@index}}</span>
+      <div class="arrow-up"></div>
+      <a href='/item/{{id}}'><b>{{title}}</b></a>
+      <a href={{url}}>({{url}})</a>
+    </td>
+  </tr>
   <tr>
     <td bgcolor=#fafaf0>
-      <h10>{{index}} </h10>
-    <table > <b font-size= large > <a href="">{{text}} </b> </a>     </td>
- <h15><a href="http:">{{url}}</h15></a> 
-    </table>
-      <span class="age"><a href="item?id=18080142">... minute ago</a></span> <span id="unv_18080142"></span> | <a href="hide?id=18080142&amp;goto=newest">hide</a> | <a href="https://hn.algolia.com/?query=Ask%20HN%3A%20Why%20do%20Google%20and%20FB%20interview%20when%20they%20already%20have%20data%20on%20you%3F&sort=byDate&dateRange=all&type=story&storyText=false&prefix&page=0" class="hnpast">past</a> | <a href="https://www.google.com/search?q=Ask%20HN%3A%20Why%20do%20Google%20and%20FB%20interview%20when%20they%20already%20have%20data%20on%20you%3F">web</a> | <a href="item?id=18080142">discuss</a>    
+      <span>{{score}} point by {{by}}</span>
+      <span class="timeago" title="{{time}}">{{time}}</span>
+      <span>| hide | past | web |discuss </span>
+      <br><br>
+    </td>
   </tr>
-  
 {{/each}}
-</div>
 
 
-<tr><td><img src="s.gif" height="10" width="0"><table width="100%" cellspacing="0" cellpadding="1"><tr><td bgcolor="#ff6600"></td></tr></table><br><center><a href="https://www.ycombinator.com/apply/">
-        Applications are open for YC Winter 2019
-      </a></center><br><center><span class="yclinks"><a href="newsguidelines.html">Guidelines</a>
-        | <a href="newsfaq.html">FAQ</a>
-        | <a href="mailto:hn@ycombinator.com">Support</a>
-        | <a href="https://github.com/HackerNews/API">API</a>
-        | <a href="security.html">Security</a>
-        | <a href="lists">Lists</a>
-        | <a href="bookmarklet.html" rel="nofollow">Bookmarklet</a>
-        | <a href="http://www.ycombinator.com/legal/">Legal</a>
-        | <a href="http://www.ycombinator.com/apply/">Apply to YC</a>
-        | <a href="mailto:hn@ycombinator.com">Contact</a></span><br><br><form method="get" action="//hn.algolia.com/">Search:
-          <input type="text" name="q" value="" size="17" autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="false"></form>
-            </center></td></tr>
-      </table></center></body><script type='text/javascript' src='hn.js?r8qEDXWkyx4I99Z66kR2'></script>
-  </html>
+<script>
+(function timeAgo(selector) {
+
+    var templates = {
+        prefix: "",
+        suffix: " ago",
+        seconds: "less than a minute",
+        minute: "about a minute",
+        minutes: "%d minutes",
+        hour: "about an hour",
+        hours: "about %d hours",
+        day: "a day",
+        days: "%d days",
+        month: "about a month",
+        months: "%d months",
+        year: "about a year",
+        years: "%d years"
+    };
+    var template = function(t, n) {
+        return templates[t] && templates[t].replace(/%d/i, Math.abs(Math.round(n)));
+    };
+
+    var timer = function(time) {
+        if (!time)
+            return;
+        time = time.replace(/\.\d+/, ""); // remove milliseconds
+        time = time.replace(/-/, "/").replace(/-/, "/");
+        time = time.replace(/T/, " ").replace(/Z/, " UTC");
+        time = time.replace(/([\+\-]\d\d)\:?(\d\d)/, " $1$2"); // -04:00 -> -0400
+        time = new Date(time * 1000 || time);
+
+        var now = new Date();
+        var seconds = ((now.getTime() - time) * .001) >> 0;
+        var minutes = seconds / 60;
+        var hours = minutes / 60;
+        var days = hours / 24;
+        var years = days / 365;
+
+        return templates.prefix + (
+                seconds < 45 && template('seconds', seconds) ||
+                seconds < 90 && template('minute', 1) ||
+                minutes < 45 && template('minutes', minutes) ||
+                minutes < 90 && template('hour', 1) ||
+                hours < 24 && template('hours', hours) ||
+                hours < 42 && template('day', 1) ||
+                days < 30 && template('days', days) ||
+                days < 45 && template('month', 1) ||
+                days < 365 && template('months', days / 30) ||
+                years < 1.5 && template('year', 1) ||
+                template('years', years)
+                ) + templates.suffix;
+    };
+
+    var elements = document.getElementsByClassName('timeago');
+    for (var i in elements) {
+        var $this = elements[i];
+        if (typeof $this === 'object') {
+            $this.innerHTML = timer($this.getAttribute('title') || $this.getAttribute('datetime'));
+        }
+    }
+    // update time every minute
+    setTimeout(timeAgo, 60000);
+
+})();
+</script>
 
 
+
+
+
+
+<!--
+<tr class='athing' id='18161882'>
+  <td align="right" valign="top" class="title"><span class="rank">1.</span></td>
+  <td valign="top" class="votelinks">
+    <center>
+      <a id='up_18161882' onclick='return vote(event, this, "up")' href='vote?id=18161882&amp;how=up&amp;auth=aa8c763c69cb434d375839ef54eba0b59b7e9036&amp;goto=newest'>
+        <div class='votearrow' title='upvote'></div>
+      </a>
+    </center>
+  </td>
+  <td class="title"><a href="https://www.cnet.com/news/your-kids-hate-your-smartphone-addiction/" class="storylink" rel="nofollow">Your kids hate your smartphone addiction</a><span class="sitebit comhead"> (<a href="from?site=cnet.com"><span class="sitestr">cnet.com</span></a>)</span>
+  </td>
+</tr>
+
+<tr>
+  <td colspan="2"></td>
+  <td class="subtext">
+    <span class="score" id="score_18161882">1 point</span> by <a href="user?id=Deinos" class="hnuser">Deinos</a> <span class="age"><a href="item?id=18161882">0 minutes ago</a></span> <span id="unv_18161882"></span> | <a href="hide?id=18161882&amp;goto=newest&amp;auth=aa8c763c69cb434d375839ef54eba0b59b7e9036"
+      onclick="return hidestory(event, this, 18161882)">hide</a> | <a href="https://hn.algolia.com/?query=Your%20kids%20hate%20your%20smartphone%20addiction&sort=byDate&dateRange=all&type=story&storyText=false&prefix&page=0" class="hnpast">past</a> |
+    <a href="https://www.google.com/search?q=Your%20kids%20hate%20your%20smartphone%20addiction">web</a> | <a href="item?id=18161882">discuss</a> </td>
+</tr> -->
