@@ -14,6 +14,24 @@
   a {
     color: inherit;
   }
+
+  .arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 8px solid #808080;
+    display:inline-block;
+  }
+
+  .arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #808080;
+    display:inline-block;
+  }
 </style>
 
 <body>
@@ -43,17 +61,17 @@
                 </span>
               </td>
               {{#if isAuthenticated}}
-              <td style="text-align:right;padding-right:4px;">
-                <span class="pagetop">
+                <td style="text-align:right;padding-right:4px;">
+                  <span class="pagetop">
                   <a href="logout">logout</a>
                 </span>
-              </td>
+                </td>
               {{else}}
-              <td style="text-align:right;padding-right:4px;">
-                <span class="pagetop">
+                <td style="text-align:right;padding-right:4px;">
+                  <span class="pagetop">
                   <a href="login">login</a>
                 </span>
-              </td>
+                </td>
               {{/if}}
             </tr>
           </table>
