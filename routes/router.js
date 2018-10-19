@@ -160,7 +160,23 @@ router.get('/newest', async function(req, res) {
       'message': result.errorMessage
     })
   }
-})
+});
+
+router.get('/item/:id', async function (req, res) {
+  let id = req.params.id;
+  let result = await ctrl.findItemById(id);
+  if (result.statusCode === 200) {
+    console.log(result.item);
+    res.render('singleview', {
+      'story': result.item,
+        'id': id
+    });
+  } else {
+    res.render('error', {
+      'message': result.errorMessage
+    });
+  }
+});
 
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
 
