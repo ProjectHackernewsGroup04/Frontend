@@ -166,7 +166,6 @@ router.get('/item/:id', async function (req, res) {
   let id = req.params.id;
   let result = await ctrl.findItemById(id);
   if (result.statusCode === 200) {
-    console.log(result.item);
     res.render('singleview', {
       'story': result.item,
         'id': id
