@@ -3,7 +3,7 @@
     <td bgcolor=#fafaf0 valign="top">
       <span>{{inc @index}}</span>
       <div class="arrow-up"></div>
-      <a href='/item/{{id}}'><b>{{title}}</b></a>
+      <a href='/item/{{story.id}}'><b>{{title}}</b></a>
       {{#if_not url ""}}
         <a href={{url}}>({{url}})</a>
       {{/if_not}}
@@ -13,7 +13,9 @@
     <td bgcolor=#fafaf0>
       <span>{{score}} point by {{by}}</span>
       <span class="timeago" title="{{time}}">{{time}}</span>
-      <span>| hide | past | web |discuss </span>
+      <span>| hide | past | web |
+        <a href="/item/{{id}}"> discuss </a>
+      </span>
       <br><br>
     </td>
   </tr>

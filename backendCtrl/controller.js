@@ -77,13 +77,27 @@ ctrl.delete = async function(id) {
   }
 }
 
-ctrl.getStories = async function(){
+ctrl.getStories = async function() {
   try {
     let res = await axios.get(`${backendUrl}item/all`)
     return res.data
 
   } catch (e) {
     console.log(`getStories ERROR: ${e}`)
+  }
+}
+
+ctrl.addComment = async function(content) {
+  try {
+    console.log('BEFORE' + JSON.stringify(content, null, 2))
+    let res = await axios.post(`${backendUrl}comment`, content)
+    return res.data
+  } catch (e) {
+    console.log(`addComment() ERROR: ${e.toString()}`)
+    return {
+      'statusCode': 500,
+      'errorMessage': e.toString()
+    }
   }
 }
 

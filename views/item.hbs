@@ -1,0 +1,54 @@
+<tr>
+  <td bgcolor=#fafaf0 valign="top">
+    <div class="arrow-up"></div>
+    <a href='/item/{{story.id}}'><b>{{story.title}}</b></a>
+    {{#if_not story.url ""}}
+      <a href={{story.url}}>({{story.url}})</a>
+    {{/if_not}}
+  </td>
+</tr>
+<tr>
+  <td bgcolor=#fafaf0>
+    <span>{{story.score}} point by {{story.by.username}}</span>
+    <span class="timeago" title="{{story.time}}">{{story.time}}</span>
+    <span>| hide | past | web |
+      <a href="/item/{{story.id}}"> discuss </a>
+    </span>
+    <br><br>
+  </td>
+</tr>
+<tr>
+  <td bgcolor=#fafaf0>
+    <p style="max-width: 375px">{{story.text}}</p>
+  </td>
+</tr>
+<tr>
+  <td bgcolor=#fafaf0>
+    <form method="post" action="/comment">
+      <input type="hidden" name="id" value="{{story.id}}">
+      <textarea name="text" rows="6" cols="60"></textarea>
+      <br><br>
+      <input type="submit" value="add comment">
+    </form>
+    <br><br>
+  </td>
+</tr>
+
+{{#each story.kids}}
+  <tr>
+    <td bgcolor=#fafaf0 class="faded-font">
+      <div class="arrow-up"></div>
+      <a href="/user/{{by}}">{{by}}</a>
+      <span class="timeago" title="{{time}}"></span><br>
+      <span style="color: #000000">
+        &nbsp &nbsp {{text}}
+        <br>
+        <font size="1">
+          &nbsp &nbsp <u><a href="/reply/{{id}}">reply</a></u>
+        </font>
+      </span>
+      <br>
+      <br>
+    </td>
+  <tr>
+{{/each}}
