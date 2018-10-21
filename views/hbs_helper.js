@@ -15,6 +15,26 @@ hbs.registerHelper('if_eq', function(a, b, opts) {
   }
 });
 
+hbs.registerHelper('if_not', function(a, b, opts) {
+  if (a != undefined && b != undefined) {
+    a = a.toString();
+    b = b.toString();
+    if (a != b) {
+      return opts.fn(this);
+    } else {
+      return opts.inverse(this);
+    }
+
+  } else {
+    return opts.inverse(this);
+  }
+});
+
+hbs.registerHelper("inc", function(value, options)
+{
+    return parseInt(value) + 1;
+});
+
 hbs.registerHelper('var', function(varName, varValue, options) {
   options.data.root[varName] = varValue;
 });

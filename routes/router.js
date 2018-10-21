@@ -112,7 +112,6 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
 })
 
 router.get('/delete-confirm/:id', async function(req, res) {
-  //finditembyid
   let id = req.params.id
   let result = await ctrl.findItemById(id)
   if (result.statusCode == 200) {
