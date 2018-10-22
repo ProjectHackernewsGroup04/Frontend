@@ -10,9 +10,9 @@
 </tr>
 <tr>
   <td style="background-color:#fafaf0;" class="subtext">
-    <span>{{story.score}} point</span> by <a href="user/{{story.by}}">{{story.by}}</a>
+    <span>{{story.score}} point</span> by <a href="user/{{story.by.username}}">{{story.by.username}}</a>
     <span class="age">
-      <a href="item/{{id}}">{{story.time}}0 minutes ago</a>
+      <span class="timeago" title="{{story.time}}">{{story.time}}</span>
     </span>
     <span></span> |
     <a href="edit/{{id}}">edit</a> |

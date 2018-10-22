@@ -111,6 +111,41 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
   }
 })
 
+router.get('/item/:id', authenticationMiddleware(), async function(req, res) {
+  let id = req.params.id
+  let result = await ctrl.findItemById(id)
+  if (result.statusCode == 200) {
+    res.render('item', {
+      'story': result.item
+    })
+  } else {
+    res.render('error', {
+      'message': result.errorMessage
+    })
+  }
+})
+
+router.post('/comment', authenticationMiddleware(), async function(req, res) {
+  let comment = {
+    'parent': req.body.id,
+    'text': req.body.text,
+    'by': req.session.passport.user.username
+  }
+  let result = await ctrl.addComment(comment)
+  if (result.statusCode == 200) {
+    console.log(`HERE WE GO AGAIN ${JSON.stringify(result, null, 2)}`);
+    res.redirect(`item/${req.body.id}`)
+  } else if (result.statusCode == 400) {
+    res.render('discuss', {
+      'message': result.errorMessage
+    })
+  } else {
+    res.render('error', {
+      'message': result.errorMessage
+    })
+  }
+})
+
 router.get('/delete-confirm/:id', async function(req, res) {
   let id = req.params.id
   let result = await ctrl.findItemById(id)
@@ -142,14 +177,16 @@ router.post('/delete/:id', async function(req, res) {
       })
     }
   } else if (btnclicked == 'No') {
-    res.redirect('/') // THIS IS SUPPOSED TO REDIRECT IN THE STORY OVERVIEW, NOT YET IMPLEMENTED
+    res.redirect(`/item/${id}`)
   }
 })
 
 router.get('/newest', async function(req, res) {
   let result = await ctrl.getStories()
   if (result.statusCode == 200) {
-    res.render('newest', {'stories': result.items})
+    res.render('newest', {
+      'stories': result.items
+    })
   } else if (result.statusCode == 400) {
     res.render('error', {
       'message': result.errorMessage
