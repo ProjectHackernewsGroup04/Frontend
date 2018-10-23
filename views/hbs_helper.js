@@ -30,9 +30,8 @@ hbs.registerHelper('if_not', function(a, b, opts) {
   }
 });
 
-hbs.registerHelper("inc", function(value, options)
-{
-    return parseInt(value) + 1;
+hbs.registerHelper("inc", function(value, options) {
+  return parseInt(value) + 1;
 });
 
 hbs.registerHelper('var', function(varName, varValue, options) {
@@ -110,3 +109,39 @@ hbs.registerHelper("case", function(value, options) {
     return options.fn(this);
   }
 });
+
+let output = ''
+let recursiveList = function (stuff, depth ) {
+  output += '<tr>';
+  if(stuff.length > 0){
+    for(idx in stuff){
+      output += `<td bgcolor=#fafaf0 class="faded-font">
+                          <span style="padding-left:  ${depth}em;">
+                          <div class="arrow-up"></div>
+                          <a href="/user/${stuff[idx].by}">${stuff[idx].by}</a>
+                          <span class="timeago" title="${stuff[idx].time}"></span></span><br>
+                          <span style="padding-left:${depth}em;color: #000000">
+                           &nbsp &nbsp${stuff[idx].text}<br>
+                          <span style="padding-left:${depth}em;font-size:10px;">&nbsp &nbsp
+                          <u><a href="/reply/${stuff[idx].id}">reply</a></u>
+                          </span></span><br><br>`
+      console.log('Append' + stuff[idx].id);
+      if (stuff[idx].kids.length > 0) {
+        kids = stuff[idx].kids
+        output += '</td></tr>';
+        recursiveList(kids, depth+1)
+      }else{
+        output += '</td></tr>';
+      }
+    }
+  }
+  return new hbs.SafeString(output);
+}
+
+hbs.registerHelper('listHelper', function(stuff, depth){
+  return recursiveList(stuff, depth)
+})
+
+hbs.registerHelper('refresh', function(){
+  output = ''
+})

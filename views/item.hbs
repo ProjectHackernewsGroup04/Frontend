@@ -34,21 +34,7 @@
   </td>
 </tr>
 
-{{#each story.kids}}
-  <tr>
-    <td bgcolor=#fafaf0 class="faded-font">
-      <div class="arrow-up"></div>
-      <a href="/user/{{by}}">{{by}}</a>
-      <span class="timeago" title="{{time}}"></span><br>
-      <span style="color: #000000">
-        &nbsp &nbsp {{text}}
-        <br>
-        <font size="1">
-          &nbsp &nbsp <u><a href="/reply/{{id}}">reply</a></u>
-        </font>
-      </span>
-      <br>
-      <br>
-    </td>
-  <tr>
-{{/each}}
+{{#refresh}}{{/refresh}}
+
+{{#listHelper story.kids 1}}
+{{/listHelper}}
