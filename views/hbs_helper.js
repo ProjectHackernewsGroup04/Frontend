@@ -118,7 +118,6 @@ let recursiveList = function (stuff, depth ) {
       output += `<td bgcolor=#fafaf0 class="faded-font">
                           <span style="padding-left:  ${depth+1}em;">
                           <div class="arrow-up"></div>
-                          FROM ${stuff[idx].id}
                           <a href="/user/${stuff[idx].by}">${stuff[idx].by}</a>
                           <span class="timeago" title="${stuff[idx].time}"></span></span><br>
                           <span style="padding-left:${depth+1}em;color: #000000">
