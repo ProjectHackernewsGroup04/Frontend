@@ -125,6 +125,20 @@ router.get('/item/:id', authenticationMiddleware(), async function(req, res) {
   }
 })
 
+router.get('/reply/:id', authenticationMiddleware(), async function(req, res) {
+  let id = req.params.id
+  let result = await ctrl.findItemById(id)
+  if (result.statusCode == 200) {
+    res.render('replycomment', {
+      'story': result.item
+    })
+  } else {
+    res.render('error', {
+      'message': result.errorMessage
+    })
+  }
+})
+
 router.post('/comment', authenticationMiddleware(), async function(req, res) {
   let comment = {
     'parent': req.body.id,
@@ -134,9 +148,13 @@ router.post('/comment', authenticationMiddleware(), async function(req, res) {
   let result = await ctrl.addComment(comment)
   if (result.statusCode == 200) {
     console.log(`HERE WE GO AGAIN ${JSON.stringify(result, null, 2)}`);
-    res.redirect(`item/${req.body.id}`)
+    if(req.body.parentcomm != undefined){
+      res.redirect(`item/${req.body.parentcomm}`)
+    }else{
+      res.redirect(`item/${req.body.id}`)
+    }
   } else if (result.statusCode == 400) {
-    res.render('discuss', {
+    res.render('item', {
       'message': result.errorMessage
     })
   } else {

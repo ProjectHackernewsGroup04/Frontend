@@ -116,13 +116,14 @@ let recursiveList = function (stuff, depth ) {
   if(stuff.length > 0){
     for(idx in stuff){
       output += `<td bgcolor=#fafaf0 class="faded-font">
-                          <span style="padding-left:  ${depth}em;">
+                          <span style="padding-left:  ${depth+1}em;">
                           <div class="arrow-up"></div>
+                          FROM ${stuff[idx].id}
                           <a href="/user/${stuff[idx].by}">${stuff[idx].by}</a>
                           <span class="timeago" title="${stuff[idx].time}"></span></span><br>
-                          <span style="padding-left:${depth}em;color: #000000">
+                          <span style="padding-left:${depth+1}em;color: #000000">
                            &nbsp &nbsp${stuff[idx].text}<br>
-                          <span style="padding-left:${depth}em;font-size:10px;">&nbsp &nbsp
+                          <span style="padding-left:${depth+1}em;font-size:10px;">&nbsp &nbsp
                           <u><a href="/reply/${stuff[idx].id}">reply</a></u>
                           </span></span><br><br>`
       console.log('Append' + stuff[idx].id);
