@@ -52,7 +52,7 @@ jobs:
             ssh $SSH_USER@$SSH_HOST "docker pull hnclonecphb/frontend:$CIRCLE_BRANCH
             docker stop frontend 
             docker rm frontend 
-            docker run --name frontend --publish=3000:3000 -d hnclonecphb/frontend:$CIRCLE_BRANCH"
+            docker run --name frontend --publish=3000:3000 --network=hnclone-network -d hnclonecphb/frontend:$CIRCLE_BRANCH"
 workflows:
   version: 2
   build-and-deploy:
