@@ -116,7 +116,8 @@ router.get('/item/:id', authenticationMiddleware(), async function(req, res) {
   let result = await ctrl.findItemById(id)
   if (result.statusCode == 200) {
     res.render('item', {
-      'story': result.item
+      'story': result.item,
+      'storyid': result.parent
     })
   } else {
     res.render('error', {
@@ -125,12 +126,13 @@ router.get('/item/:id', authenticationMiddleware(), async function(req, res) {
   }
 })
 
-router.get('/reply/:id', authenticationMiddleware(), async function(req, res) {
+router.get('/reply/:storyid/:id', authenticationMiddleware(), async function(req, res) {
   let id = req.params.id
   let result = await ctrl.findItemById(id)
   if (result.statusCode == 200) {
     res.render('replycomment', {
-      'story': result.item
+      'story': result.item,
+      'storyid': req.params.storyid
     })
   } else {
     res.render('error', {
@@ -149,9 +151,9 @@ router.post('/comment', authenticationMiddleware(), async function(req, res) {
   if (result.statusCode == 200) {
     console.log(`HERE WE GO AGAIN ${JSON.stringify(result, null, 2)}`);
     if(req.body.parentcomm != undefined){
-      res.redirect(`item/${req.body.parentcomm}`)
+      res.redirect(`item/${req.body.parentcomm}`) //COMMENT OF a comment
     }else{
-      res.redirect(`item/${req.body.id}`)
+      res.redirect(`item/${req.body.id}`) //
     }
   } else if (result.statusCode == 400) {
     res.render('item', {

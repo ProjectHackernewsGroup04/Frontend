@@ -111,7 +111,7 @@ hbs.registerHelper("case", function(value, options) {
 });
 
 let output = ''
-let recursiveList = function (stuff, depth ) {
+let recursiveList = function (stuff, depth, storyid ) {
   output += '<tr>';
   if(stuff.length > 0){
     for(idx in stuff){
@@ -123,13 +123,13 @@ let recursiveList = function (stuff, depth ) {
                           <span style="padding-left:${depth+1}em;color: #000000">
                            &nbsp &nbsp${stuff[idx].text}<br>
                           <span style="padding-left:${depth+1}em;font-size:10px;">&nbsp &nbsp
-                          <u><a href="/reply/${stuff[idx].id}">reply</a></u>
+                          <u><a href="/reply/${storyid}/${stuff[idx].id}">reply</a></u>
                           </span></span><br><br>`
       console.log('Append' + stuff[idx].id);
       if (stuff[idx].kids.length > 0) {
         kids = stuff[idx].kids
         output += '</td></tr>';
-        recursiveList(kids, depth+1)
+        recursiveList(kids, depth+1, storyid)
       }else{
         output += '</td></tr>';
       }
@@ -138,8 +138,8 @@ let recursiveList = function (stuff, depth ) {
   return new hbs.SafeString(output);
 }
 
-hbs.registerHelper('listHelper', function(stuff, depth){
-  return recursiveList(stuff, depth)
+hbs.registerHelper('listHelper', function(stuff, depth, storyid){
+  return recursiveList(stuff, depth, storyid)
 })
 
 hbs.registerHelper('refresh', function(){

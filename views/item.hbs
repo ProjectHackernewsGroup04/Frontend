@@ -26,6 +26,7 @@
   <td bgcolor=#fafaf0>
     <form method="post" action="/comment">
       <input type="hidden" name="id" value="{{story.id}}">
+      <input type="hidden" name="storyid" value={{story.id}}>
       <textarea name="text" rows="6" cols="60"></textarea>
       <br><br>
       <input type="submit" value="add comment">
@@ -36,5 +37,5 @@
 
 {{#refresh}}{{/refresh}}
 
-{{#listHelper story.kids 1}}
+{{#listHelper story.kids 1 story.id}}
 {{/listHelper}}
