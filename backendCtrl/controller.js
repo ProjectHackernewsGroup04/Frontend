@@ -104,7 +104,6 @@ ctrl.addComment = async function(content) {
 ctrl.editStory = async function(story) {
     try {
         console.log(`THIS IS STORYy: ${JSON.stringify(story)}\n`)
-        story.id = Number(story.id)
         let res = await axios.put(`${backendUrl}edit/${story.id}`, story)
         console.log("requst sendes to the backend")
         return res.data
