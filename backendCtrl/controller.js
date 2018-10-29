@@ -101,4 +101,22 @@ ctrl.addComment = async function(content) {
   }
 }
 
+ctrl.editStory = async function(story) {
+    try {
+        console.log(`THIS IS STORYy: ${JSON.stringify(story)}\n`)
+        story.id = Number(story.id)
+        let res = await axios.put(`${backendUrl}edit/${story.id}`, story)
+        console.log("requst sendes to the backend")
+        return res.data
+    } catch (e) {
+        console.log(`edit() ERROR: ${e.toString()}`);
+        return {
+            'statusCode': 500,
+            'errorMessage': e.toString()
+        }
+    }
+}
+module.exports = ctrl;
+
+
 module.exports = ctrl;
