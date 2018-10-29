@@ -111,11 +111,12 @@ hbs.registerHelper("case", function(value, options) {
 });
 
 let output = ''
-let recursiveList = function (stuff, depth, storyid ) {
+let recursiveList = function(stuff, depth, storyid) {
   output += '<tr>';
-  if(stuff.length > 0){
-    for(idx in stuff){
-      output += `<td bgcolor=#fafaf0 class="faded-font">
+  if (stuff) {
+    if (stuff.length > 0) {
+      for (idx in stuff) {
+        output += `<td bgcolor=#fafaf0 class="faded-font">
                           <span style="padding-left:  ${depth+1}em;">
                           <div class="arrow-up"></div>
                           <a href="/user/${stuff[idx].by}">${stuff[idx].by}</a>
@@ -125,23 +126,24 @@ let recursiveList = function (stuff, depth, storyid ) {
                           <span style="padding-left:${depth+1}em;font-size:10px;">&nbsp &nbsp
                           <u><a href="/reply/${storyid}/${stuff[idx].id}">reply</a></u>
                           </span></span><br><br>`
-      console.log('Append' + stuff[idx].id);
-      if (stuff[idx].kids.length > 0) {
-        kids = stuff[idx].kids
-        output += '</td></tr>';
-        recursiveList(kids, depth+1, storyid)
-      }else{
-        output += '</td></tr>';
+        console.log('Append' + stuff[idx].id);
+        if (stuff[idx].kids.length > 0) {
+          kids = stuff[idx].kids
+          output += '</td></tr>';
+          recursiveList(kids, depth + 1, storyid)
+        } else {
+          output += '</td></tr>';
+        }
       }
     }
   }
   return new hbs.SafeString(output);
 }
 
-hbs.registerHelper('listHelper', function(stuff, depth, storyid){
+hbs.registerHelper('listHelper', function(stuff, depth, storyid) {
   return recursiveList(stuff, depth, storyid)
 })
 
-hbs.registerHelper('refresh', function(){
+hbs.registerHelper('refresh', function() {
   output = ''
 })

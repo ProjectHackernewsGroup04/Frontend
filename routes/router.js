@@ -111,7 +111,7 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
   }
 })
 
-router.get('/item/:id', authenticationMiddleware(), async function(req, res) {
+router.get('/item/:id', async function(req, res) {
   let id = req.params.id
   let result = await ctrl.findItemById(id)
   if (result.statusCode == 200) {
