@@ -114,7 +114,6 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
 router.get('/item/:id', async function(req, res) {
   let id = req.params.id
   let result = await ctrl.findItemById(id)
-  // let result = await ctrl.play()
   if (result.statusCode == 200) {
     res.render('item', {
       'story': result.item,
@@ -260,19 +259,19 @@ router.post('/edit/:id', async function(req,res){
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
 
 router.get('/newcomments', function(req, res) {
-  res.send('This feature is not yet implemented..')
+  res.render('home', {'message': 'All comments is not implemented yet, but you can find comments of a specific story by clicking \'discuss\' from the \'new\' page.'})
 })
 
 router.get('/show', function(req, res) {
-  res.send('This feature is not yet implemented..')
+  res.render('home', {'message': 'The Show page is not implemented yet'})
 })
 
 router.get('/ask', function(req, res) {
-  res.send('This feature is not yet implemented..')
+  res.render('home', {'message': 'The Ask page is not implemented yet'})
 })
 
 router.get('/jobs', function(req, res) {
-  res.send('This feature is not yet implemented..')
+  res.render('home', {'message': 'The Jobs page is not implemented yet'})
 })
 
 module.exports = router
