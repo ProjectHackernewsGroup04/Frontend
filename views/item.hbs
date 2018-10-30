@@ -11,8 +11,8 @@
   <td bgcolor=#fafaf0>
     <span>{{story.score}} point by {{story.by.username}}</span>
     <span class="timeago" title="{{story.time}}">{{story.time}}</span>
-    <span>| hide | past | web |
-      <a href="/item/{{story.id}}"> discuss </a>
+    <span>| hide | past | web | favorite |
+      <a href="/item/{{story.id}}"> {{#commcount}}{{/commcount}} comments </a>
     </span>
     <br><br>
   </td>

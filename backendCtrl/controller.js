@@ -101,4 +101,101 @@ ctrl.addComment = async function(content) {
   }
 }
 
+//-----------------------------PLAYGROUND-------------------
+ctrl.play = async function() {
+  return {
+    "statusCode": 200,
+    "item": {
+      "_id": {
+        "$oid": "5bd6d3a3364377000cf930c7"
+      },
+      "title": "The new story",
+      "url": "http://46.101.43.21:3000/",
+      "text": "text stuff",
+      "by": {
+        "_id": {
+          "$oid": "5bc62d8ecd11d1000b5415bd"
+        },
+        "username": "che",
+        "password": {
+          "$binary": "JDJiJDEyJEJVVXdLRmFiUC9IUHQ4WUg3TWFVMnUwTC5WUktOd1JFTU1rLzZNcVlOaVhFNGZiLm5OWFpT",
+          "$type": "00"
+        }
+      },
+      "id": "2afacc1307d7441183962d99ab1c0284",
+      "descendants": 7,
+      "kids": [{
+        "_id": {
+          "$oid": "5bd6d57f364377000cf930c8"
+        },
+        "parent": "2afacc1307d7441183962d99ab1c0284",
+        "text": "First comment",
+        "by": "che",
+        "id": "945f8ca3c71a47619302c6e44db67625",
+        "descendants": 7,
+        "kids": [{
+          "_id": {
+            "$oid": "5bd6d586364377000cf930c9"
+          },
+          "parent": "945f8ca3c71a47619302c6e44db67625",
+          "text": "2nd comment",
+          "by": "che",
+          "id": "0ba9eb20edb445aabc9cdaab277d8f45",
+          "descendants": 7,
+          "kids": [{
+            "_id": {
+              "$oid": "5bd6d591364377000cf930ca"
+            },
+            "parent": "0ba9eb20edb445aabc9cdaab277d8f45",
+            "text": "3rd comment",
+            "by": "che",
+            "id": "674f46eb07a84d2fb5754c3702d43717",
+            "descendants": 7,
+            "kids": [],
+            "score": 1,
+            "time": {
+              "$date": 1540806033699
+            },
+            "type": "comment",
+            "deleted": false,
+            "poll": 222,
+            "parts": [],
+            "title": "",
+            "url": ""
+          }],
+          "score": 1,
+          "time": {
+            "$date": 1540806022885
+          },
+          "type": "comment",
+          "deleted": false,
+          "poll": 222,
+          "parts": [],
+          "title": "",
+          "url": ""
+        }],
+        "score": 1,
+        "time": {
+          "$date": 1540806015202
+        },
+        "type": "comment",
+        "deleted": false,
+        "poll": 222,
+        "parts": [],
+        "title": "",
+        "url": ""
+      }],
+      "score": 3,
+      "time": {
+        "$date": 1540805539454
+      },
+      "type": "story",
+      "deleted": false,
+      "poll": 222,
+      "parts": [],
+      "parent": -1
+    }
+  }
+}
+
 module.exports = ctrl;

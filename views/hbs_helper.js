@@ -111,22 +111,26 @@ hbs.registerHelper("case", function(value, options) {
 });
 
 let output = ''
+let count = 0
+
 let recursiveList = function(stuff, depth, storyid) {
   output += '<tr>';
   if (stuff) {
     if (stuff.length > 0) {
       for (idx in stuff) {
+        count++
         output += `<td bgcolor=#fafaf0 class="faded-font">
                           <span style="padding-left:  ${depth+1}em;">
                           <div class="arrow-up"></div>
                           <a href="/user/${stuff[idx].by}">${stuff[idx].by}</a>
                           <span class="timeago" title="${stuff[idx].time}"></span></span><br>
-                          <span style="padding-left:${depth+1}em;color: #000000">
-                           &nbsp &nbsp${stuff[idx].text}<br>
-                          <span style="padding-left:${depth+1}em;font-size:10px;">&nbsp &nbsp
+                          <span style="padding-left:${depth+1}em;color: #000000">|
+                          &nbsp &nbsp${stuff[idx].text}<br>
+                          <span style="padding-left:${depth+1}em;">|</span>
+                          <span style="font-size:10px;">&nbsp &nbsp
                           <u><a href="/reply/${storyid}/${stuff[idx].id}">reply</a></u>
-                          </span></span><br><br>`
-        console.log('Append' + stuff[idx].id);
+                          </span></span><br>
+                          <span style="padding-left:${depth+1}em;color: #000000"">|</span><br>`
         if (stuff[idx].kids.length > 0) {
           kids = stuff[idx].kids
           output += '</td></tr>';
@@ -146,4 +150,9 @@ hbs.registerHelper('listHelper', function(stuff, depth, storyid) {
 
 hbs.registerHelper('refresh', function() {
   output = ''
+  count = 0
+})
+
+hbs.registerHelper('commcount', function(){
+  return count
 })
