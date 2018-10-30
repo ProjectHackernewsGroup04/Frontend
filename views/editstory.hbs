@@ -1,0 +1,36 @@
+<tr>
+    <td bgcolor=#fafaf0 >
+        <div class="arrow-up"></div>
+        <a href={{story.title}}><b>{{story.title}}</b></a>
+        <a href={{story.url}}>({{story.url}})</a>
+    </td>
+</tr>
+<tr>
+    <td bgcolor=#fafaf0>
+        <span>point by </span>
+        <span >{{story.score}}</span>
+        <span>| hide | past | web |discuss </span>
+        <br><br>
+    </td>
+</tr>
+
+<tr>
+    <td bgcolor=#fafaf0>
+        <form method="post"  action="/edit/{{story.id}}">
+            <table border="0">
+                <tr>
+                    <td>Title  </td>
+                    <td><input type="text" name="title" value="{{story.title}}" size="50" ></span></td>
+                </tr>
+                <tr>
+                    <td>Url </td>
+                    <td><input type="text" name="url" value="{{story.url}}" size="50"></td>
+                </tr>
+                <td></td>
+                <td><input type="submit" value="Edit Story"></td>
+                </tr>
+                <tr style="height:20px"></tr>
+            </table>
+        </form>
+    </td>
+</tr>

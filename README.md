@@ -84,4 +84,4 @@ vagrant@vagrant:/app$ docker-compose up --build
 ```
 
 > _Locally: http://localhost:9000/_ <br>
-_Deployed Version: http://46.101.43.21:9000/_
+_Deployed Version: http://46.101.43.21:3000/_

@@ -219,6 +219,44 @@ router.get('/newest', async function(req, res) {
   }
 })
 
+router.get('/edit/:id', async function(req,res) {
+    let id = req.params.id
+    let result = await ctrl.findItemById(id)
+    console.log("in  url astttt :" + id)
+    if (result.statusCode == 200) {
+        res.render('editstory', {
+            'story': result.item
+        })
+    } else {
+        res.render('error', {
+            'message': result.errorMessage
+        })
+    }
+})
+router.post('/edit/:id', async function(req,res){
+    let id = req.params.id
+    let story = {
+        'title': req.body.title,
+        'url': req.body.url,
+        'text': "",
+        'by': req.session.passport.user.username,
+        'id': req.params.id
+    }
+    console.log("story tavasote in neveshte shode" + story.by)
+    console.log(`${JSON.stringify(story, null, 2)}`)
+
+    let result = await ctrl.editStory(story)
+    console.log("in  url ast " + story.title)
+    if (result.statusCode == 200) {
+        res.redirect('/')
+    } else {
+        res.render('error', {
+            'message': result.errorMessage
+        })
+    }
+})
+
+
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
 
 router.get('/newcomments', function(req, res) {
