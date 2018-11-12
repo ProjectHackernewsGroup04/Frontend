@@ -77,8 +77,9 @@ ctrl.delete = async function(id) {
   }
 }
 
-ctrl.getStories = async function() {
+ctrl.getStories = async function(max) {
   try {
+    console.log('MAX HERE' + max);
     let res = await axios.get(`${backendUrl}item/all`)
     return res.data
 

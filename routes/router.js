@@ -211,17 +211,24 @@ router.post('/delete/:id', async function(req, res) {
   }
 })
 
-router.get('/newest', async function(req, res) {
-  const responseTimeInMs = Date.now() - res.locals.startEpoch
+router.get('/newest/:max', async function(req, res) {
+  // const responseTimeInMs = Date.now() - res.locals.startEpoch
+  //
+  // httpRequestDurationMicroseconds
+  //   .labels(req.method, req.route.path, res.statusCode)
+  //   .observe(responseTimeInMs)
 
-  httpRequestDurationMicroseconds
-    .labels(req.method, req.route.path, res.statusCode)
-    .observe(responseTimeInMs)
-
-  let result = await ctrl.getStories()
+  let max = parseInt(req.params.max)
+  if(max){
+    max += 100
+  }else{
+    max = 100
+  }
+  let result = await ctrl.getStories(max)
   if (result.statusCode == 200) {
     res.render('newest', {
-      'stories': result.items
+      'stories': result.items,
+      'max': max
     })
   } else if (result.statusCode == 400) {
     res.render('error', {
@@ -233,6 +240,7 @@ router.get('/newest', async function(req, res) {
     })
   }
 })
+
 
 router.get('/edit/:id', async function(req, res) {
   let id = req.params.id
