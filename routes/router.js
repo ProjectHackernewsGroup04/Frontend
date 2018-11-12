@@ -4,15 +4,6 @@ let passport = require('passport')
 let request = require('request')
 let Prometheus = require('prom-client')
 
-const metricsInterval = Prometheus.collectDefaultMetrics()
-const httpRequestDurationMicroseconds = new Prometheus.Histogram({
-  name: 'http_request_duration_ms',
-  help: 'Duration of HTTP requests in ms',
-  labelNames: ['route'],
-  // buckets for response time from 0.1ms to 500ms
-  buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]
-})
-
 let ctrl = require('../backendCtrl/controller')
 
 passport.serializeUser(function(user, done) {
@@ -31,6 +22,21 @@ function authenticationMiddleware() {
     res.redirect('/login'); //login
   }
 }
+
+const metricsInterval = Prometheus.collectDefaultMetrics()
+const httpRequestDurationMicroseconds = new Prometheus.Histogram({
+  name: 'http_request_duration_ms',
+  help: 'Duration of HTTP requests in ms',
+  labelNames: ['method', 'route', 'code'],
+  buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]  // buckets for response time from 0.1ms to 500ms
+})
+
+// Runs before each requests
+// router.use((req, res, next) => {
+//   res.locals.startEpoch = Date.now()
+//   next()
+// })
+
 
 router.get('/', function(req, res) {
   res.render('home')
@@ -212,12 +218,10 @@ router.post('/delete/:id', async function(req, res) {
 })
 
 router.get(['/newest', '/newest/:max'], async function(req, res) {
-  // const responseTimeInMs = Date.now() - res.locals.startEpoch
-  //
-  // httpRequestDurationMicroseconds
-  //   .labels(req.method, req.route.path, res.statusCode)
-  //   .observe(responseTimeInMs)
-
+  const responseTimeInMs = Date.now() - res.locals.startEpoch
+  httpRequestDurationMicroseconds
+    .labels(req.method, req.route.path, res.statusCode)
+    .observe(responseTimeInMs)
   let max = parseInt(req.params.max)
   if (max) {
     max += 100
@@ -278,12 +282,6 @@ router.post('/edit/:id', async function(req, res) {
   }
 })
 
-router.get('/metrics', function(req, res) {
-  res.set('Content-Type', Prometheus.register.contentType)
-  res.send(Prometheus.register.metrics())
-})
-
-
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
 
 router.get('/newcomments', function(req, res) {
@@ -309,5 +307,36 @@ router.get('/jobs', function(req, res) {
     'message': 'The Jobs page is not implemented yet'
   })
 })
+
+router.get('/metrics', function(req, res) {
+  res.set('Content-Type', Prometheus.register.contentType)
+  res.end(Prometheus.register.metrics())
+})
+
+
+// router.use((req, res, next) => {
+//   const responseTimeInMs = Date.now() - res.locals.startEpoch
+//   console.log('HHHEYEEEY ' + JSON.stringify(req[0]));
+//   httpRequestDurationMicroseconds
+//     .labels(req.method, req.route.path, res.statusCode)
+//     .observe(responseTimeInMs)
+//
+//   next()
+// })
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  clearInterval(metricsInterval)
+
+  server.close((err) => {
+    if (err) {
+      console.error(err)
+      process.exit(1)
+    }
+
+    process.exit(0)
+  })
+})
+
 
 module.exports = router
