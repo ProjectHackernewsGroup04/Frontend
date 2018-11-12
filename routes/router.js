@@ -2,6 +2,16 @@ let express = require('express')
 let router = express.Router()
 let passport = require('passport')
 let request = require('request')
+let Prometheus = require('prom-client')
+
+const metricsInterval = Prometheus.collectDefaultMetrics()
+const httpRequestDurationMicroseconds = new Prometheus.Histogram({
+  name: 'http_request_duration_ms',
+  help: 'Duration of HTTP requests in ms',
+  labelNames: ['route'],
+  // buckets for response time from 0.1ms to 500ms
+  buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]
+})
 
 let ctrl = require('../backendCtrl/controller')
 
@@ -150,9 +160,9 @@ router.post('/comment', authenticationMiddleware(), async function(req, res) {
   let result = await ctrl.addComment(comment)
   if (result.statusCode == 200) {
     console.log(`HERE WE GO AGAIN ${JSON.stringify(result, null, 2)}`);
-    if(req.body.parentcomm != undefined){
+    if (req.body.parentcomm != undefined) {
       res.redirect(`item/${req.body.parentcomm}`) //COMMENT OF a comment
-    }else{
+    } else {
       res.redirect(`item/${req.body.id}`) //
     }
   } else if (result.statusCode == 400) {
@@ -202,6 +212,12 @@ router.post('/delete/:id', async function(req, res) {
 })
 
 router.get('/newest', async function(req, res) {
+  const responseTimeInMs = Date.now() - res.locals.startEpoch
+
+  httpRequestDurationMicroseconds
+    .labels(req.method, req.route.path, res.statusCode)
+    .observe(responseTimeInMs)
+
   let result = await ctrl.getStories()
   if (result.statusCode == 200) {
     res.render('newest', {
@@ -218,60 +234,73 @@ router.get('/newest', async function(req, res) {
   }
 })
 
-router.get('/edit/:id', async function(req,res) {
-    let id = req.params.id
-    let result = await ctrl.findItemById(id)
-    console.log("in  url astttt :" + id)
-    if (result.statusCode == 200) {
-        res.render('editstory', {
-            'story': result.item
-        })
-    } else {
-        res.render('error', {
-            'message': result.errorMessage
-        })
-    }
+router.get('/edit/:id', async function(req, res) {
+  let id = req.params.id
+  let result = await ctrl.findItemById(id)
+  console.log("in  url astttt :" + id)
+  if (result.statusCode == 200) {
+    res.render('editstory', {
+      'story': result.item
+    })
+  } else {
+    res.render('error', {
+      'message': result.errorMessage
+    })
+  }
 })
-router.post('/edit/:id', async function(req,res){
-    let id = req.params.id
-    let story = {
-        'title': req.body.title,
-        'url': req.body.url,
-        'text': "",
-        'by': req.session.passport.user.username,
-        'id': req.params.id
-    }
-    console.log("story tavasote in neveshte shode" + story.by)
-    console.log(`${JSON.stringify(story, null, 2)}`)
+router.post('/edit/:id', async function(req, res) {
+  let id = req.params.id
+  let story = {
+    'title': req.body.title,
+    'url': req.body.url,
+    'text': "",
+    'by': req.session.passport.user.username,
+    'id': req.params.id
+  }
+  console.log("story tavasote in neveshte shode" + story.by)
+  console.log(`${JSON.stringify(story, null, 2)}`)
 
-    let result = await ctrl.editStory(story)
-    console.log("in  url ast " + story.title)
-    if (result.statusCode == 200) {
-        res.redirect('/')
-    } else {
-        res.render('error', {
-            'message': result.errorMessage
-        })
-    }
+  let result = await ctrl.editStory(story)
+  console.log("in  url ast " + story.title)
+  if (result.statusCode == 200) {
+    res.redirect('/')
+  } else {
+    res.render('error', {
+      'message': result.errorMessage
+    })
+  }
+})
+
+router.get('/metrics', function(req, res) {
+  res.set('Content-Type', Prometheus.register.contentType)
+  res.send(Prometheus.register.metrics())
 })
 
 
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
 
 router.get('/newcomments', function(req, res) {
-  res.render('home', {'message': 'All comments is not implemented yet, but you can find comments of a specific story by clicking \'discuss\' from the \'new\' page.'})
+  res.render('home', {
+    'message': 'All comments is not implemented yet, but you can find comments of a specific story by clicking \'discuss\' from the \'new\' page.'
+  })
 })
 
 router.get('/show', function(req, res) {
-  res.render('home', {'message': 'The Show page is not implemented yet'})
+  res.render('home', {
+    'message': 'The Show page is not implemented yet'
+  })
 })
 
 router.get('/ask', function(req, res) {
-  res.render('home', {'message': 'The Ask page is not implemented yet'})
+  res.render('home', {
+    'message': 'The Ask page is not implemented yet'
+  })
 })
 
 router.get('/jobs', function(req, res) {
-  res.render('home', {'message': 'The Jobs page is not implemented yet'})
+  res.render('home', {
+    'message': 'The Jobs page is not implemented yet'
+  })
 })
 
 module.exports = router
