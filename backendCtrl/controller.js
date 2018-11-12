@@ -3,6 +3,7 @@ let _ = require('lodash')
 let backendUrl = 'http://backend:5000/api/'
 let ctrl = {};
 
+
 ctrl.login = async function(user) {
   try {
     let res = await axios.post(`${backendUrl}login`, user)
@@ -77,11 +78,11 @@ ctrl.delete = async function(id) {
   }
 }
 
-ctrl.getStories = async function() {
-  try {
-    let res = await axios.get(`${backendUrl}item/all`)
-    return res.data
 
+ctrl.getStories = async function(maxval) {
+  try {
+    let res = await axios.get(`${backendUrl}item/pagination/?from=0&to=${maxval}`)
+    return res.data
   } catch (e) {
     console.log(`getStories ERROR: ${e}`)
   }
