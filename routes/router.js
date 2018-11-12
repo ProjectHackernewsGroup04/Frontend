@@ -211,7 +211,7 @@ router.post('/delete/:id', async function(req, res) {
   }
 })
 
-router.get('/newest/:max', async function(req, res) {
+router.get(['/newest', '/newest/:max'], async function(req, res) {
   // const responseTimeInMs = Date.now() - res.locals.startEpoch
   //
   // httpRequestDurationMicroseconds
@@ -219,9 +219,9 @@ router.get('/newest/:max', async function(req, res) {
   //   .observe(responseTimeInMs)
 
   let max = parseInt(req.params.max)
-  if(max){
+  if (max) {
     max += 100
-  }else{
+  } else {
     max = 100
   }
   let result = await ctrl.getStories(max)
@@ -240,7 +240,6 @@ router.get('/newest/:max', async function(req, res) {
     })
   }
 })
-
 
 router.get('/edit/:id', async function(req, res) {
   let id = req.params.id
