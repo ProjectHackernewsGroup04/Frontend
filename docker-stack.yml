@@ -1,13 +1,13 @@
 version: '3.5'
 services:
   frontend:
-   image: hnclonecphb/frontend:master
+    image: hnclonecphb/frontend:master
     deploy:
       replicas: 3
       restart_policy:
         condition: on-failure
       update_config:
-          delay: 30s
+        delay: 30s
     ports:
       - 3000:3000
     links:
