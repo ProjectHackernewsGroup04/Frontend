@@ -4,15 +4,6 @@ let passport = require('passport')
 let request = require('request')
 let Prometheus = require('prom-client')
 
-const metricsInterval = Prometheus.collectDefaultMetrics()
-const httpRequestDurationMicroseconds = new Prometheus.Histogram({
-  name: 'http_request_duration_ms',
-  help: 'Duration of HTTP requests in ms',
-  labelNames: ['route'],
-  // buckets for response time from 0.1ms to 500ms
-  buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]
-})
-
 let ctrl = require('../backendCtrl/controller')
 
 passport.serializeUser(function(user, done) {
@@ -31,6 +22,21 @@ function authenticationMiddleware() {
     res.redirect('/login'); //login
   }
 }
+
+Prometheus.collectDefaultMetrics()
+
+// const summary = new Prometheus.Summary({
+//   name: 'http_response_time',
+//   help: 'landing page loadtime'
+// });
+// summary.observe(10);
+
+const gauge = new Prometheus.Gauge({
+  name: 'load_time',
+  help: 'landing page loadtime',
+  labelNames: ['method','path', 'statusCode']
+});
+
 
 router.get('/', function(req, res) {
   res.render('home')
@@ -100,6 +106,7 @@ router.get('/submit', authenticationMiddleware(), async function(req, res) {
 })
 
 router.post('/submit', authenticationMiddleware(), async function(req, res) {
+  const end1 = gauge.startTimer({ method: 'POST', path: req.route.path });
   let story = {
     'title': req.body.title,
     'url': req.body.url,
@@ -110,14 +117,17 @@ router.post('/submit', authenticationMiddleware(), async function(req, res) {
   let result = await ctrl.submit(story)
   if (result.statusCode == 200) {
     res.redirect('/newest')
+    end1({ statusCode: '200' });
   } else if (result.statusCode == 400) {
     res.render('submit', {
       'message': result.errorMessage
     })
+    end1({ statusCode: '400' });
   } else {
     res.render('error', {
       'message': result.errorMessage
     })
+    end1({ statusCode: '500' });
   }
 })
 
@@ -212,12 +222,7 @@ router.post('/delete/:id', async function(req, res) {
 })
 
 router.get(['/newest', '/newest/:max'], async function(req, res) {
-  // const responseTimeInMs = Date.now() - res.locals.startEpoch
-  //
-  // httpRequestDurationMicroseconds
-  //   .labels(req.method, req.route.path, res.statusCode)
-  //   .observe(responseTimeInMs)
-
+  const end = gauge.startTimer({ method: 'GET',  path: req.route.path });
   let max = parseInt(req.params.max)
   if (max) {
     max += 100
@@ -230,14 +235,17 @@ router.get(['/newest', '/newest/:max'], async function(req, res) {
       'stories': result.items,
       'max': max
     })
+    end({ statusCode: '200' });
   } else if (result.statusCode == 400) {
     res.render('error', {
       'message': result.errorMessage
     })
+    end({ statusCode: '400' });
   } else {
     res.render('error', {
       'message': result.errorMessage
     })
+    end({ statusCode: '400' });
   }
 })
 
@@ -278,12 +286,6 @@ router.post('/edit/:id', async function(req, res) {
   }
 })
 
-router.get('/metrics', function(req, res) {
-  res.set('Content-Type', Prometheus.register.contentType)
-  res.send(Prometheus.register.metrics())
-})
-
-
 //--------------------------------------PLAYGROUND---------------------------------------------------------------
 
 router.get('/newcomments', function(req, res) {
@@ -308,6 +310,11 @@ router.get('/jobs', function(req, res) {
   res.render('home', {
     'message': 'The Jobs page is not implemented yet'
   })
+})
+
+router.get('/metrics', function(req, res) {
+  res.set('Content-Type', Prometheus.register.contentType)
+  res.end(Prometheus.register.metrics())
 })
 
 module.exports = router
