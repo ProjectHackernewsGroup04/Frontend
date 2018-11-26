@@ -81,7 +81,8 @@ ctrl.delete = async function(id) {
 
 ctrl.getStories = async function(maxval) {
   try {
-    let res = await axios.get(`${backendUrl}item/pagination/?from=0&to=${maxval}`)
+    // console.log('MAKING REQUEST TO THIS: ' + `${backendUrl}item/pagination/from=0&to=${maxval}`);
+    let res = await axios.get(`${backendUrl}item/pagination?from=0&to=${maxval}`)
     return res.data
   } catch (e) {
     console.log(`getStories ERROR: ${e}`)
