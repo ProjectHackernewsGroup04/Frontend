@@ -37,6 +37,8 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: docker build -t hnclonecphb/frontend:$CIRCLE_BRANCH .
       - run: docker push hnclonecphb/frontend:$CIRCLE_BRANCH
+      - run: docker build -t hnclonecphb/frontend:$CIRCLE_WORKFLOW_ID .
+      - run: docker push hnclonecphb/frontend:$CIRCLE_WORKFLOW_ID
 
       - store_artifacts:
           path: test-reports
@@ -49,10 +51,7 @@ jobs:
       - run:
           name: Deploy over SSH
           command: |
-            ssh $SSH_USER@$SSH_HOST "docker pull hnclonecphb/frontend:$CIRCLE_BRANCH
-            docker stop frontend 
-            docker rm frontend 
-            docker run --name frontend --publish=3000:3000 --network=hnclone-network -d hnclonecphb/frontend:$CIRCLE_BRANCH"
+            ssh $SSH_USER@$SSH_HOST "docker service update --publish-add=3000:3000 -d --image hnclonecphb/frontend:$CIRCLE_WORKFLOW_ID frontend"
 workflows:
   version: 2
   build-and-deploy:
